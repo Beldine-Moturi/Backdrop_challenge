@@ -1,0 +1,11 @@
+type User {
+    id: ID!
+    account_number: String!
+    bank_code: String!
+    account_name: String!
+    is_verified: String! 
+}
+
+type Query {
+    user(bank_code: bank_code!, acc_number: account_number!): User!
+}

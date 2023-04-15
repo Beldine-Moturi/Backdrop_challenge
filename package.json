@@ -1,0 +1,19 @@
+{
+  "name": "Backdrop_challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "graphpack",
+    "build": "graphpack build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.18.2",
+    "graphpack": "^1.0.9",
+    "pg": "^8.10.0"
+  }
+}
