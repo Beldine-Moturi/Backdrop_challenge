@@ -1,11 +1,18 @@
 type User {
     id: ID!
-    account_number: String!
-    bank_code: String!
-    account_name: String!
-    is_verified: String! 
+    accountNumber: Int
+    bankCode: Int
+    accountName: String
+    isVerified: Boolean
 }
 
 type Query {
-    user(bank_code: bank_code!, acc_number: account_number!): User!
+    user(bankCode: Int!, accNumber: Int!): User!
+}
+
+type Mutation {
+    createUser(id: ID!, accNumber: Int, bankCode: Int, accName: String, isVerified: Boolean = false): User!
+    updateUser(accNumber: Int!, bankCode: Int!, accName: String!): User!
+    deleteUser(id: ID!): User!
+
 }
