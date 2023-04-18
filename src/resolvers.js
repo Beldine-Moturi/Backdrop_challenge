@@ -8,14 +8,18 @@ const resolvers = {
             // call paystack API to get account name -- return this if accName not in our database
             const user = users.find(user => user.bankCode == bankCode && user.accountNumber == accNumber);
             if (user && user['accountName']) {
-                return user['accountName'];
+                // return user['accountName'];
+                return user;
             } else {
                 const accName = getPaystackName(accNumber, bankCode);
 
                 if (user && user['isVerified'] && levenshteinDistance(user['accountName'], accName) <= 2) {
-                    return user['accountName'];
+                    // return user['accountName'];
+                    return user;
                 } else {
-                    return accName;
+                    // return accName;
+                    user.accountName = accName;
+                    return user;
                 }
             }
         }
@@ -25,8 +29,18 @@ const resolvers = {
             // Creates a new user, saves to database
         },
         updateUser: (parent, { accNumber, bankCode, accName }, context, info) => {
-            // calls paystack API to verify bank account information -- updates isVerified attribute
-            // update existing user with bank account details
+            const user = users.find(user => user.accountName == accName);
+            const paystackAccName = getPaystackName(accNumber, bankCode);
+
+            if (paystackAccName && levenshteinDistance(accName, paystackAccName) <= 2) {
+                // update existing user with bank account details
+                user.accountNumber = accNumber;
+                user.bankCode = bankCode;
+                user.isVerified = true;
+                return user;
+            } else {
+                return user;
+            }
         },
         deleteUser: (parent, { id }, context, info) => {
             // Delete user from database
