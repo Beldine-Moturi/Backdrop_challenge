@@ -1,6 +1,7 @@
 import { users } from "./db"
 // Fetch data from postreSQL database
 const request = require('request');
+const levenshtein = require('fast-levenshtein');
 
 const resolvers = {
     Query: {
@@ -13,7 +14,7 @@ const resolvers = {
             } else {
                 const accName = getPaystackName(accNumber, bankCode);
 
-                if (user && user['isVerified'] && levenshteinDistance(user['accountName'], accName) <= 2) {
+                if (user && user['isVerified'] && levenshtein(user['accountName'], accName) <= 2) {
                     // return user['accountName'];
                     return user;
                 } else {
@@ -32,7 +33,7 @@ const resolvers = {
             const user = users.find(user => user.accountName == accName);
             const paystackAccName = getPaystackName(accNumber, bankCode);
 
-            if (paystackAccName && levenshteinDistance(accName, paystackAccName) <= 2) {
+            if (paystackAccName && levenshtein(accName, paystackAccName) <= 2) {
                 // update existing user with bank account details
                 user.accountNumber = accNumber;
                 user.bankCode = bankCode;
@@ -47,11 +48,6 @@ const resolvers = {
         }
     }
 };
-
-// write function to do the Levenshtein Distance calculation
-function levenshteinDistance(userName, accName) {
-    // TODO
-}
 
 // write function that makes the paystack API calls and returns account name
 function getPaystackName(accNumber, bankCode) {
